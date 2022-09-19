@@ -5,7 +5,7 @@ import 'package:notes/ui/widgets/notes_model.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class Notes extends StatelessWidget {
-  const Notes({Key? key}) : super(key: key);
+  const Notes({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,8 +15,8 @@ class Notes extends StatelessWidget {
         builder: (context, child, model) {
           return IndexedStack(
             index: model.stackIndex,
-            children: const [
-              NotesList(), // indexStack = 0 default
+            children: [
+              const NotesList(), // indexStack = 0 default
               NotesEntry(), // indexStack = 1
             ],
           );
