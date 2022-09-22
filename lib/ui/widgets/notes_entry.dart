@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:notes/ui/widgets/notes.dart';
-import 'package:notes/ui/widgets/notes_model.dart';
+import 'package:notes/db_sqflite/notes_db.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'notes_model.dart';
 
 class NotesEntry extends StatelessWidget {
   NotesEntry({super.key});
@@ -14,6 +14,8 @@ class NotesEntry extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final note = Note();
+
     return ScopedModel(
       model: notesModel,
       child: ScopedModelDescendant<NotesModel>(
@@ -33,9 +35,10 @@ class NotesEntry extends StatelessWidget {
                     title: TextFormField(
                       decoration: const InputDecoration(hintText: "Title"),
                       controller: _titleEditingController,
-                      validator: ((value) {
+                      validator: (value) {
                         value ?? 'Please enter a Title!';
-                      }),
+                        return null;
+                      },
                     ),
                   ),
                   // -------------------------------------------------- Content note:
@@ -60,13 +63,9 @@ class NotesEntry extends StatelessWidget {
                   ElevatedButton(
                     child: const Text("Save"),
                     onPressed: () {
-                      final title = _titleEditingController.text;
-                      final content = _contentEditingController.text;
-                      final note = Note(title: title, content: content);
-                      notesModel.loadData(note);
-
-                      notesModel.setStackIndex(
-                          0); // The screen with indexStack = 0 is rebuild.
+                      note.title = _titleEditingController.text;
+                      note.content = _contentEditingController.text;
+                      _save(context, notesModel, note);
                     },
                   ),
                 ],
@@ -76,5 +75,11 @@ class NotesEntry extends StatelessWidget {
         },
       ),
     );
+  }
+
+  void _save(BuildContext context, NotesModel inModel, Note note) async {
+    await NotesDBService.dbService.create(note);
+    notesModel.loadData(NotesDBService.dbService);
+    notesModel.setStackIndex(0);
   }
 }

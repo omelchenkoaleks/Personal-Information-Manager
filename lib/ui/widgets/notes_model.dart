@@ -1,25 +1,18 @@
+import 'package:notes/db_sqflite/notes_db.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class Note {
-  // int id;
-  String title;
-  String content;
-  Note({
-    required this.title,
-    required this.content,
-  });
-  // String color;
-
-  @override
-  String toString() => 'Note(title: $title, content: $content)';
+  int id = 0;
+  String title = '';
+  String content = '';
 }
 
 class NotesModel extends Model {
   int stackIndex = 0;
   List entityList = [];
 
-  void loadData(Note note) {
-    entityList.add(note);
+  void loadData(NotesDBService db) async {
+    entityList = await db.getAll();
 
     notifyListeners();
   }
@@ -30,3 +23,6 @@ class NotesModel extends Model {
     notifyListeners();
   }
 }
+
+// The one and only instance of this model.
+NotesModel notesModel = NotesModel();

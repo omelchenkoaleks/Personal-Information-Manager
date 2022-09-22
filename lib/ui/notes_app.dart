@@ -10,7 +10,7 @@ class NotesApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const Notes(),
+      home: Notes(),
     );
   }
 }

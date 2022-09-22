@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:notes/ui/widgets/notes.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import 'notes_model.dart';

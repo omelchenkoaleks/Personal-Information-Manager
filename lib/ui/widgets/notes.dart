@@ -4,8 +4,12 @@ import 'package:notes/ui/widgets/notes_list.dart';
 import 'package:notes/ui/widgets/notes_model.dart';
 import 'package:scoped_model/scoped_model.dart';
 
+import '../../db_sqflite/notes_db.dart';
+
 class Notes extends StatelessWidget {
-  const Notes({super.key});
+  Notes({super.key}) {
+    notesModel.loadData(NotesDBService.dbService);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,8 +20,8 @@ class Notes extends StatelessWidget {
           return IndexedStack(
             index: model.stackIndex,
             children: [
-              const NotesList(), // indexStack = 0 default
-              NotesEntry(), // indexStack = 1
+              const NotesList(),
+              NotesEntry(),
             ],
           );
         },
@@ -25,6 +29,3 @@ class Notes extends StatelessWidget {
     );
   }
 }
-
-// The one and only instance of this model.
-NotesModel notesModel = NotesModel();
